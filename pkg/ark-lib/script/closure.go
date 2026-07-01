@@ -356,11 +356,11 @@ func (d *CSVMultisigClosure) Decode(script []byte) (bool, error) {
 
 	var sequence []byte
 	if txscript.IsSmallInt(tokenizer.Opcode()) {
-		if tokenizer.Opcode() == txscript.OP_0 {
-			// minimal encoding for a zero scriptnum is an empty slice
+		n := txscript.AsSmallInt(tokenizer.Opcode())
+		if n == 0 {
 			sequence = []byte{}
 		} else {
-			sequence = []byte{tokenizer.Opcode()}
+			sequence = []byte{byte(n)}
 		}
 	} else {
 		sequence = tokenizer.Data()
